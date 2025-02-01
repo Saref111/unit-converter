@@ -27,7 +27,7 @@ impl From<String> for Length {
     }
 }
 
-pub fn convert_length(value: f64, from: Length, to: Length) -> f64 {
+pub fn convert_length(value: f64, from: &Length, to: &Length) -> f64 {
     let meters = match from {
         Length::Meter => value,
         Length::Kilometer => value * KM_M_FACTOR,
