@@ -1,7 +1,7 @@
 use cli::try_parse_args;
+use converter::{convert, ConvertError};
 use parser::parse;
 use prompts::ask_prompts;
-use units::length::convert_length;
 
 mod cli;
 mod converter;
@@ -17,9 +17,16 @@ fn main() {
     // parse args 
     let (value, from, to) = parse(args);
 
-    let t_to = to.clone();
     // convert
-    let result = convert_length(value, &from, to.into());
+    let result = convert(value, &from, &to);
 
-    println!("{value} {from} to {t_to} is {result}")
+    match result {
+        Ok(res) => println!("{value} {from} to {to} is {res}"),
+        Err(e) => {
+            match e {
+                ConvertError::UnknownUnit(v, unit1, unit2) => eprint!("Cannot convert {v} from {unit1} to {unit2}"),
+                ConvertError::IncompatibleUnits(unit1, unit2) => eprint!("Cannot convert from {unit1} to {unit2}"),
+            }
+        }
+    }
 }

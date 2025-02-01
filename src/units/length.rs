@@ -1,12 +1,14 @@
 use strum::{Display, EnumIter};
 
+use crate::converter::ConvertError;
+
 use super::{
     consts::{
         KM_M_FACTOR, 
         MI_M_FACTOR, 
         M_FT_FACTOR
     }, 
-    units::Convertible
+    main::Convertible
 };
 
 #[derive(Debug, EnumIter, PartialEq, Display, Clone)]
@@ -35,25 +37,27 @@ impl From<String> for Length {
 }
 
 impl Convertible for Length {
-    fn convert(&self, value: f64, to: Box<Length>) -> f64 {
+    fn convert(&self, value: f64, to: Box<Length>) -> Result<f64, ConvertError> {
         convert_length(value, self, to)
     }
 }
 
-pub fn convert_length(value: f64, from: &Length, to: Box<Length>) -> f64 {
+pub fn convert_length(value: f64, from: &Length, to: Box<Length>) -> Result<f64, ConvertError> {
     let meters = match from {
         Length::Meter => value,
         Length::Kilometer => value * KM_M_FACTOR,
         Length::Mile => value * MI_M_FACTOR,
         Length::Foot => value * M_FT_FACTOR,
-        Length::Unknown => return value,
+        Length::Unknown => return Err(ConvertError::UnknownUnit(value, (*from).clone().into(), (*to).into())),
     };
 
-    match *to {
+    let result = match *to {
         Length::Meter => meters,
         Length::Kilometer => meters / KM_M_FACTOR,
         Length::Mile => meters / MI_M_FACTOR,
         Length::Foot => meters / M_FT_FACTOR,
-        Length::Unknown => meters,
-    }
+        Length::Unknown => return Err(ConvertError::UnknownUnit(value, (*from).clone().into(), (*to).into())),
+    };
+
+    Ok(result)
 }
