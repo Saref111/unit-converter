@@ -1,7 +1,7 @@
 use dialoguer::{Input, Select};
 use strum::IntoEnumIterator;
 
-use crate::{cli::Args, units::length::Length};
+use crate::{cli::Args, units::{length::Length, units::Units}};
 
 pub fn ask_prompts(args: Args) -> Args {
     let value = args.value.unwrap_or_else(|| {
@@ -12,9 +12,7 @@ pub fn ask_prompts(args: Args) -> Args {
     });
 
     let from = args.from.unwrap_or_else(|| {
-        let units: Vec<Length> = Length::iter()
-            .filter(|it| *it != Length::Unknown)
-            .collect();
+        let units= Units::defined_only();
 
         let idx = Select::new()
             .with_prompt("Enter the unit you want to convert from")
@@ -27,9 +25,7 @@ pub fn ask_prompts(args: Args) -> Args {
 
 
     let to = args.to.unwrap_or_else(|| {
-        let units: Vec<Length> = Length::iter()
-            .filter(|it| *it != Length::Unknown)
-            .collect();
+        let units = Units::defined_only();
 
         let idx = Select::new()
             .with_prompt("Enter the unit you want to convert to")

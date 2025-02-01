@@ -15,8 +15,11 @@ fn main() {
     // if not ask prompts
     let args = ask_prompts(args);
     // parse args 
-    let (value, from, to) = parse(args); 
-    let result = convert_length(value, &from, &to);
+    let (value, from, to) = parse(args);
 
-    println!("{value} {from} to {to} is {result}")
+    let t_to = to.clone();
+    // convert
+    let result = convert_length(value, &from, to.into());
+
+    println!("{value} {from} to {t_to} is {result}")
 }

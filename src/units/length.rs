@@ -1,8 +1,15 @@
 use strum::{Display, EnumIter};
 
-use super::consts::{KM_M_FACTOR, MI_M_FACTOR, M_FT_FACTOR};
+use super::{
+    consts::{
+        KM_M_FACTOR, 
+        MI_M_FACTOR, 
+        M_FT_FACTOR
+    }, 
+    units::Convertible
+};
 
-#[derive(Debug, EnumIter, PartialEq, Display)]
+#[derive(Debug, EnumIter, PartialEq, Display, Clone)]
 pub enum Length {
     Meter,
     Kilometer,
@@ -27,7 +34,13 @@ impl From<String> for Length {
     }
 }
 
-pub fn convert_length(value: f64, from: &Length, to: &Length) -> f64 {
+impl Convertible for Length {
+    fn convert(&self, value: f64, to: Box<Length>) -> f64 {
+        convert_length(value, self, to)
+    }
+}
+
+pub fn convert_length(value: f64, from: &Length, to: Box<Length>) -> f64 {
     let meters = match from {
         Length::Meter => value,
         Length::Kilometer => value * KM_M_FACTOR,
@@ -36,11 +49,11 @@ pub fn convert_length(value: f64, from: &Length, to: &Length) -> f64 {
         Length::Unknown => return value,
     };
 
-    match to {
+    match *to {
         Length::Meter => meters,
         Length::Kilometer => meters / KM_M_FACTOR,
         Length::Mile => meters / MI_M_FACTOR,
-        Length::Foot => meters / 0.3048,
+        Length::Foot => meters / M_FT_FACTOR,
         Length::Unknown => meters,
     }
 }
