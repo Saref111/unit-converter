@@ -25,6 +25,13 @@ pub fn convert(value: f64, from: &Unit, to: &Unit) -> Result<f64, ConvertError> 
 
             length.convert(value, to_length.clone().into())
         },
+        Unit::Weight(ref weight) => {
+            let Unit::Weight(to_weight) = to else {
+                return Err(ConvertError::IncompatibleUnits(from.clone(), to.clone()));
+            };
+
+            weight.convert(value, to_weight.clone().into())
+        },
         Unit::Unknown => Err(ConvertError::UnknownUnit(value, from.clone(), to.clone())),
     }
 }

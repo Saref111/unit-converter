@@ -12,3 +12,10 @@ pub const Y_S_FACTOR: f64 = 31536000.0;
 pub const DE_S_FACTOR: f64 = 315360000.0;
 pub const C_S_FACTOR: f64 = 3153600000.0;
 pub const MI_S_FACTOR: f64 = 31536000000.0;
+
+pub const G_MG_FACTOR: f64 = 1000.0;
+pub const KG_G_FACTOR: f64 = 1000.0;
+pub const T_G_FACTOR: f64 = 1000000.0;
+pub const OZ_G_FACTOR: f64 = 28.3495;
+pub const LB_G_FACTOR: f64 = 453.592;
+pub const ST_G_FACTOR: f64 = 6350.29;
