@@ -1,6 +1,6 @@
 use cli::try_parse_args;
 use converter::{convert, ConvertError};
-use parser::parse;
+use parser::main::parse;
 use prompts::ask_prompts;
 
 mod cli;

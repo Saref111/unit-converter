@@ -10,12 +10,15 @@ struct Cli {
 
     #[arg(short, long)]
     to: Option<String>,
+
+    expression: Option<String>,
 }
 
 pub struct Args {
     pub value: Option<String>,
     pub from: Option<String>,
     pub to: Option<String>,
+    pub expression: Option<String>,
 }
 
 pub fn try_parse_args() -> Args {
@@ -24,6 +27,7 @@ pub fn try_parse_args() -> Args {
     Args {
         value: args.value,
         from: args.from,
-        to: args.to
+        to: args.to,
+        expression: args.expression,
     }
 }

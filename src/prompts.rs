@@ -3,6 +3,10 @@ use dialoguer::{Input, Select};
 use crate::{cli::Args, units::main::Unit};
 
 pub fn ask_prompts(args: Args) -> Args {
+    if args.expression.is_some() {
+        return args;
+    }
+
     let value = args.value.unwrap_or_else(|| {
         Input::new()
             .with_prompt("Enter the numeric value you want to convert")
@@ -38,6 +42,7 @@ pub fn ask_prompts(args: Args) -> Args {
     Args {
         value : Some(value),
         from: Some(from),
-        to: Some(to)
+        to: Some(to),
+        expression: None
     }
 }
