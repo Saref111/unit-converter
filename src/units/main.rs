@@ -5,7 +5,7 @@ use crate::converter::ConvertError;
 
 use super::{length::Length, time::Time, weight::Weight};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Unit {
     Time(Time),
     Length(Length),

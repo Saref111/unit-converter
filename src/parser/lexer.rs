@@ -4,8 +4,8 @@ use strum::Display as StrumDisplay;
 
 use crate::units::main::Unit;
 
-#[derive(Debug, StrumDisplay)]
-enum TokenType {
+#[derive(Debug, StrumDisplay, PartialEq, Clone)]
+pub enum TokenType {
     Number(f64),
     Arrow,
     Unit(Unit),
@@ -13,16 +13,17 @@ enum TokenType {
 }
 
 #[derive(Debug, StrumDisplay)]
-enum ExpressionError {
+pub enum ExpressionError {
     LexicalError(String),
-    ParsingError(ParseFloatError)
+    ParsingError(ParseFloatError),
+    SyntaxError(String)
 }
 
 impl Error for ExpressionError {}
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Token {
-    token_type: TokenType,
+    pub token_type: TokenType,
     lexeme: String,
 }
 
@@ -41,7 +42,7 @@ impl Display for Token {
     }
 }
 
-struct Lexer {
+pub struct Lexer {
     input: Vec<char>,
     position: usize,
     current_char: Option<char>,
@@ -102,7 +103,7 @@ impl Lexer {
         Unit::from(result)
     }
 
-    fn get_next_token(&mut self) -> Result<Token, ExpressionError> {
+    pub fn get_next_token(&mut self) -> Result<Token, ExpressionError> {
         while let Some(c) = self.current_char {
             match c {
                 ' ' => self.skip_whitespace(),

@@ -2,24 +2,28 @@ use crate::units::main::Unit;
 
 use crate::parser::lexer::Token;
 
+#[derive(Debug, Clone)]
 pub enum AST {
     Value(ASTValue),
     Unit(ASTUnit),
     ConversionOp(ASTConversionOp)
 }
 
+#[derive(Debug, Clone)]
 pub struct ASTValue {
-    token: Token,
-    value: f64,
-    unit: Box<ASTUnit>,
+    pub token: Token,
+    pub value: f64,
+    pub unit: ASTUnit,
 }
 
+#[derive(Debug, Clone)]
 pub struct ASTUnit {
-    token: Token,
-    unit: Unit
+    pub token: Token,
+    pub unit: Unit
 }
 
+#[derive(Debug, Clone)]
 pub struct ASTConversionOp {
-    left: Box<ASTValue>,
-    right: Box<ASTUnit>
+    pub left: Box<ASTValue>,
+    pub right: ASTUnit
 }
